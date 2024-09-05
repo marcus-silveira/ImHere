@@ -8,40 +8,36 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 import "react-native-get-random-values";
-import { v4 as uuid4 } from "uuid";
 import { Participant } from "../../components/Participant";
-
-function handleParticipantAdd() {
-  console.log("BOTAO CLICADO");
-}
-
-function handleParticipantRemove(name: string) {
-  Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
-    {
-      text: "Sim",
-      onPress: () => Alert.alert("Removido"),
-    },
-    {
-      text: "Não",
-      style: "cancel",
-    },
-  ]);
-}
+import React, { useState } from "react";
 
 export function Home() {
-  const participants = [
-    "Pedro",
-    "Marcus",
-    "João",
-    "Paulo",
-    "Lucas",
-    "Marcelo",
-    "Ana",
-    "Júlia",
-    "Igor",
-    "Tales",
-  ];
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [participantName, setParticipantName] = useState("");
 
+  function handleParticipantAdd() {
+    if (participants.includes(participantName)) {
+      return Alert.alert(
+        "Participante já adicionado",
+        "Já existe um participante na lista com este nome"
+      );
+    }
+    setParticipants((prevState) => [...prevState, participantName]);
+    setParticipantName("");
+  }
+
+  function handleParticipantRemove(name: string) {
+    Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
+      {
+        text: "Sim",
+        onPress: () => Alert.alert("Removido"),
+      },
+      {
+        text: "Não",
+        style: "cancel",
+      },
+    ]);
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.eventName}>Nome do Evento</Text>
@@ -51,6 +47,8 @@ export function Home() {
           style={styles.input}
           placeholder="Nome do Participante"
           placeholderTextColor="#6B6B6B"
+          onChangeText={(text) => setParticipantName(text)}
+          value={participantName}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
