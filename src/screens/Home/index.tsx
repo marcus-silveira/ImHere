@@ -1,10 +1,12 @@
 import { Text, View, TextInput, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 
+import { Participant } from "../../components/Participant";
+
+function handleParticipantAdd() {
+  console.log("BOTAO CLICADO");
+}
 export function Home() {
-  function handleParticipantAdd() {
-    console.log("BOTAO CLICADO");
-  }
   return (
     <View style={styles.container}>
       <Text style={styles.eventName}>Nome do Evento</Text>
@@ -20,6 +22,9 @@ export function Home() {
           <Text style={styles.ButtonText}>+</Text>
         </TouchableOpacity>
       </View>
+
+      <Participant name="Marcus" />
+      <Participant name="Pedro" />
     </View>
   );
 }
