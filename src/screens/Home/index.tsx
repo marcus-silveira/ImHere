@@ -1,12 +1,37 @@
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { styles } from "./styles";
-
+import "react-native-get-random-values";
+import { v4 as uuid4 } from "uuid";
 import { Participant } from "../../components/Participant";
 
 function handleParticipantAdd() {
   console.log("BOTAO CLICADO");
 }
+
+function handleParticipantRemove(name: string) {
+  console.log(`Removendo Participante ${name}`);
+}
+
 export function Home() {
+  const participants = [
+    "Pedro",
+    "Marcus",
+    "João",
+    "Paulo",
+    "Lucas",
+    "Marcelo",
+    "Ana",
+    "Júlia",
+    "Igor",
+    "Tales",
+  ];
+
   return (
     <View style={styles.container}>
       <Text style={styles.eventName}>Nome do Evento</Text>
@@ -23,8 +48,15 @@ export function Home() {
         </TouchableOpacity>
       </View>
 
-      <Participant name="Marcus" />
-      <Participant name="Pedro" />
+      <ScrollView>
+        {participants.map((participant) => (
+          <Participant
+            key={uuid4().toString()}
+            name={participant}
+            onRemove={() => handleParticipantRemove(participant)}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
