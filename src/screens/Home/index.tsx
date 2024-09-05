@@ -3,7 +3,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ScrollView,
+  Alert,
+  FlatList,
 } from "react-native";
 import { styles } from "./styles";
 import "react-native-get-random-values";
@@ -15,7 +16,16 @@ function handleParticipantAdd() {
 }
 
 function handleParticipantRemove(name: string) {
-  console.log(`Removendo Participante ${name}`);
+  Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
+    {
+      text: "Sim",
+      onPress: () => Alert.alert("Removido"),
+    },
+    {
+      text: "Não",
+      style: "cancel",
+    },
+  ]);
 }
 
 export function Home() {
@@ -48,15 +58,23 @@ export function Home() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView>
-        {participants.map((participant) => (
+      <FlatList
+        data={participants}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
           <Participant
-            key={uuid4().toString()}
-            name={participant}
-            onRemove={() => handleParticipantRemove(participant)}
+            key={item}
+            name={item}
+            onRemove={() => handleParticipantRemove(item)}
           />
-        ))}
-      </ScrollView>
+        )}
+        ListEmptyComponent={() => (
+          <Text style={styles.listEmptyText}>
+            Ninguém chegou ao evento ainda. Adicione participantes à sua lista
+            de presença.
+          </Text>
+        )}
+      />
     </View>
   );
 }
