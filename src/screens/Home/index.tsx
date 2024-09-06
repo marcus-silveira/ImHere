@@ -16,21 +16,26 @@ export function Home() {
   const [participantName, setParticipantName] = useState("");
 
   function handleParticipantAdd() {
-    if (participants.includes(participantName)) {
+    if (participants.includes(participantName.trim())) {
       return Alert.alert(
         "Participante já adicionado",
         "Já existe um participante na lista com este nome"
       );
     }
-    setParticipants((prevState) => [...prevState, participantName]);
-    setParticipantName("");
+    if (participantName) {
+      setParticipants((prevState) => [...prevState, participantName.trim()]);
+      setParticipantName("");
+    }
   }
 
   function handleParticipantRemove(name: string) {
     Alert.alert("Remover", `Deseja remover o participante ${name}?`, [
       {
         text: "Sim",
-        onPress: () => Alert.alert("Removido"),
+        onPress: () =>
+          setParticipants((prevState) =>
+            prevState.filter((participant) => participant !== name)
+          ),
       },
       {
         text: "Não",
